@@ -1,0 +1,37 @@
+<?php
+
+namespace Database\Seeders;
+
+// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
+
+class DatabaseSeeder extends Seeder
+{
+    /**
+     * Seed the application's database.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        $this->call([
+            // PermissionSeeder::class,
+            // RolesTableSeeder::class,
+            // PermissionRoleTableSeeder::class,
+            // UsersTableSeeder::class,
+            // RoleUserTableSeeder::class,
+
+
+            // PermissionsTableSeeder::class,
+            // RolesTableSeeder::class,
+            // PermissionRoleTableSeeder::class,
+            // UsersTableSeeder::class,
+            // RoleUserTableSeeder::class,
+            PermissionsTableSeeder::class,
+            RolesTableSeeder::class,
+            PermissionRoleTableSeeder::class,
+            UsersTableSeeder::class,
+            RoleUserTableSeeder::class,
+        ]);
+    }
+}

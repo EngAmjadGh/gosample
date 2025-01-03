@@ -1,0 +1,127 @@
+@extends('layouts.master')
+@section('title')
+    @lang('translation.zones')
+@endsection
+@section('content')
+    @component('components.breadcrumb')
+        @slot('li_1')
+            @lang('translation.appname')
+        @endslot
+        @slot('title')
+            @lang('translation.zones')
+        @endslot
+    @endcomponent
+
+    <div class="card">
+        <div class="card-header">
+            {{ trans('global.create') }} {{ trans('cruds.zone.title_singular') }}
+        </div>
+
+        <div class="card-body">
+            <form method="POST" action="{{ route('admin.zones.store') }}" enctype="multipart/form-data" id="myform">
+                @csrf
+                <div class="form-group">
+                    <label class="required" for="name">{{ trans('cruds.zone.fields.name') }}</label>
+                    <input class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" type="text" name="name"
+                        id="name" value="{{ old('name', '') }}" required>
+                    @if ($errors->has('name'))
+                        <div class="invalid-feedback">
+                            {{ $errors->first('name') }}
+                        </div>
+                    @endif
+                    <span class="help-block">{{ trans('cruds.zone.fields.name_helper') }}</span>
+                </div>
+                <div class="form-group">
+                    <label class="required" for="area">{{ trans('cruds.zone.fields.area') }}</label>
+
+                    <div class="form-group" name="map" id="map"></div>
+                    <input hidden type="text" name="area" id="area">
+                    @if ($errors->has('area'))
+                        <div class="invalid-feedback">
+                            {{ $errors->first('area') }}
+                        </div>
+                    @endif
+                    <span class="help-block">{{ trans('cruds.zone.fields.area_helper') }}</span>
+                </div>
+
+                <div class="form-group">
+                    <button class="btn btn-danger" type="submit" id="save">
+                        {{ trans('global.save') }}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+@endsection
+@section('script')
+    <script type="text/javascript">
+        var area = [];
+        var polygonArray = [];
+        var polygon2;
+
+        $('#myform').on('submit', function() {
+            console.log(polygonArray);
+            console.log(polygon2.getPath());
+            $('#area').val(JSON.stringify(polygonArray));
+            return true;
+        });
+
+        // $("#resetMap").on("click",function(){
+
+        //     // window.location.href = "{{ url('admin/worker-addresses') }}";
+
+        //     // console.log('resetMap');
+        //     $('#success-notifiy').attr('data-toast-text', 'Map is cleared successfully') ;
+        //     $('#success-notifiy').click();
+        //     polygonArray = [];
+        //     initMap();
+        // });
+
+
+        function initMap() {
+            var map = new google.maps.Map(document.getElementById('map'), {
+                center: {
+                    lat: 24.7156901,
+                    lng: 46.6439257
+                },
+                zoom: 12
+            });
+
+            var drawingManager = new google.maps.drawing.DrawingManager({
+                drawingMode: google.maps.drawing.OverlayType.POLYGON,
+                drawingControl: true,
+                drawingControlOptions: {
+                    position: google.maps.ControlPosition.TOP_CENTER,
+                    drawingModes: ['polygon']
+                    //   drawingModes: ['polygon', 'circle']
+                },
+                polygonOptions: {
+                    editable: true
+                }
+
+            });
+            drawingManager.setMap(map);
+            google.maps.event.addListener(drawingManager, 'polygoncomplete', function(polygon) {
+                polygonArray = [];
+                polygon2 = polygon;
+                for (var i = 0; i < polygon.getPath().getLength(); i++) {
+                    var coords = polygon.getPath().getAt(i).toUrlValue(6).split(',');
+                    var lat = coords[0];
+                    var lng = coords[1];
+                    polygonArray.push({
+                        'lat': lat,
+                        'lng': lng
+                    });
+                }
+            });
+        }
+    </script>
+
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDf1ht01vFyWcfWS33mmdfd30qm5-uyWhM&libraries=drawing&callback=initMap"
+        async defer></script>
+    <link href="{{ asset('css/map.css') }}" rel="stylesheet" type="text/css" />
+    <script src="{{ URL::asset('assets/libs/prismjs/prismjs.min.js') }}"></script>
+    <script src="{{ URL::asset('assets/js/pages/notifications.init.js') }}"></script>
+    <script src="{{ URL::asset('/assets/js/app.min.js') }}"></script>
+@endsection

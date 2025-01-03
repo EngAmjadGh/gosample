@@ -1,0 +1,45 @@
+.container {
+    text-align: center;
+    max-width: 799px;
+    margin: 0 auto;
+    padding-top: 50px;
+}
+
+table {
+    margin: 0 auto;
+    width: 100%;
+    border-color: #000;
+}
+
+td, th {
+    text-align: center;
+    border: 1px solid #ddd;
+    margin: 0;
+    padding: 0;
+}
+
+img {
+    max-width: 400px;
+}
+
+.bg_green {
+    background-color: #005A60;
+    color: #fff;
+}
+
+.bg_red {
+    background-color: #8D363B;
+    color: #fff;
+}
+
+.bg_red th {
+    font-size: 10px;
+}
+
+.small_table td {
+    font-size: 10px;
+}
+
+.main_table td {
+    font-size: 10px;
+}
