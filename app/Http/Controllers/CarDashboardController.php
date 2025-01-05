@@ -31,10 +31,11 @@ class CarDashboardController extends Controller
     public function index()
     {
         abort_if(Gate::denies('car-dashboard'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-        $imeis = Car::where('afaqi', true)->pluck('imei')->toArray();
+        $imeis = Car::where('afaqi', true)->limit(3)->pluck('imei')->toArray();
+
         $cars = [];
         $token = $this->generateAndSaveToken();//'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS5hZmFxeS5zYS9hdXRoL2xvZ2luIiwiaWF0IjoxNjkxOTIyMzU3LCJleHAiOjE2OTQ1MTQzNTcsIm5iZiI6MTY5MTkyMjM1NywianRpIjoiSjVMQUpPMk50MUtQZW1XMCIsInN1YiI6IjYyNDFhNTAyYWE1MGM4NjY1NTdkZjA1YiIsInBydiI6IjI3MGVjZmM3ZWEzZWQ5MzdlYTg0OTM2MmEzYTUwOTEwYzZkOGNlNGYifQ.PnxbuNX6TOVhSUzmQRiVKVEYhsatZ8fxg_6koYBni5A';
-
+        // $token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vYXBpLmFmYXF5LnNhL2F1dGgvbG9naW4iLCJpYXQiOjE3MzYwMTI2OTQsImV4cCI6MTczODYwNDY5NCwibmJmIjoxNzM2MDEyNjk0LCJqdGkiOiIydURlMXF4aEhGcVNvOHNpIiwic3ViIjoiNjVmOTRiM2QxNTRmNTExYTZkMDAyZjIyIiwicHJ2IjoiMjcwZWNmYzdlYTNlZDkzN2VhODQ5MzYyYTNhNTA5MTBjNmQ4Y2U0ZiJ9.CTehf02lax9werqBjr2m4biWpQaJFXRdls_F6di7jCs";
         foreach ($imeis as $imei) {
             // $afaqiVehicleId = '357073294755919';
             $afaqiVehicleId = $imei;
@@ -96,8 +97,10 @@ class CarDashboardController extends Controller
 
 public function getVehicleData($token, $afaqiVehicleId) {
     $url = 'http://api.afaqy.pro/units/lists?token=' . $token;
-
-    $response = Http::post($url, [
+    $response = Http::withoutVerifying()
+    ->retry(3, 1000)
+    ->timeout(30)
+    ->post($url, [
         'data' => [
             'simplify' => 1,
             'filters' => [
@@ -114,7 +117,6 @@ public function getVehicleData($token, $afaqiVehicleId) {
             ]
         ]
     ]);
-
     if ($response->ok()) {
         return $response->json();
     } else {
@@ -147,7 +149,10 @@ public function generateAndSaveToken()
             ],
         ];
 
-        $response = Http::post($url, $payload);
+        $response = Http::withoutVerifying()
+        ->retry(3, 1000)
+        ->timeout(30)
+        ->post($url, $payload);
 
         if ($response->status() == 200) {
             $data = $response->json();
