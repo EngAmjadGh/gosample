@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Shipment;
 use App\Services\AyenatiLogisticsService;
 use Illuminate\Http\Request;
 
@@ -21,13 +22,13 @@ class LogisticsController
             'senderId' => $request->senderId,
             'receiverId' => $request->receiverId,
         ];
-
-        $response = $this->logisticsService->getShipmentStatus(
-            $validated['dispatchId'],
-            $validated['senderId'],
-            $validated['receiverId']
-        );
-        return $response;
-        dd($response);
+        $shipment = Shipment::where('dispatchId', 'id')->first();
+        return $shipment;
+        // $response = $this->logisticsService->getShipmentStatus(
+        //     $validated['dispatchId'],
+        //     $validated['senderId'],
+        //     $validated['receiverId']
+        // );
+        // return $response;
     }
 }
