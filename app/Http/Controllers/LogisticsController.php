@@ -22,7 +22,7 @@ class LogisticsController
             'senderId' => $request->senderId,
             'receiverId' => $request->receiverId,
         ];
-        $shipment = Shipment::where('dispatchId', 'id')->first();
+        $shipment = Shipment::where('id', $request->dispatchId)->first();
         return $shipment;
         // $response = $this->logisticsService->getShipmentStatus(
         //     $validated['dispatchId'],
