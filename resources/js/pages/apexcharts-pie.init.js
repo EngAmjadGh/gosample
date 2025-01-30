@@ -309,7 +309,7 @@ var options = {
     theme: {
         monochrome: {
             enabled: true,
-            color: '#405189',
+            color: '#005D69',
             shadeTo: 'light',
             shadeIntensity: 0.6
         }

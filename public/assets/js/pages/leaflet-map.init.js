@@ -36,8 +36,8 @@ L.circle([51.508, -0.11], {
   radius: 500
 }).addTo(markermap);
 L.polygon([[51.509, -0.08], [51.503, -0.06], [51.51, -0.047]], {
-  color: '#405189',
-  fillColor: '#405189'
+  color: '#005D69',
+  fillColor: '#005D69'
 }).addTo(markermap); // Working with popups
 
 var popupmap = L.map('leaflet-map-popup').setView([51.505, -0.09], 13);
@@ -50,13 +50,13 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
 }).addTo(popupmap);
 L.marker([51.5, -0.09]).addTo(popupmap).bindPopup("<b>Hello world!</b><br />I am a popup.").openPopup();
 L.circle([51.508, -0.11], 500, {
-  color: '#f06548',
-  fillColor: '#f06548',
+  color: '#BD6BA7',
+  fillColor: '#BD6BA7',
   fillOpacity: 0.5
 }).addTo(popupmap).bindPopup("I am a circle.");
 L.polygon([[51.509, -0.08], [51.503, -0.06], [51.51, -0.047]], {
-  color: '#405189',
-  fillColor: '#405189'
+  color: '#005D69',
+  fillColor: '#005D69'
 }).addTo(popupmap).bindPopup("I am a polygon.");
 var popup = L.popup(); // leaflet-map-custom-icons
 
@@ -88,7 +88,7 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
 }).addTo(interactivemap); // get color depending on population density value
 
 function getColor(d) {
-  return d > 1000 ? '#405189' : d > 500 ? '#516194' : d > 200 ? '#63719E' : d > 100 ? '#7480A9' : d > 50 ? '#8590B4' : d > 20 ? '#97A0BF' : d > 10 ? '#A8B0C9' : '#A8B0C9';
+  return d > 1000 ? '#005D69' : d > 500 ? '#516194' : d > 200 ? '#63719E' : d > 100 ? '#7480A9' : d > 50 ? '#8590B4' : d > 20 ? '#97A0BF' : d > 10 ? '#A8B0C9' : '#A8B0C9';
 }
 
 function style(feature) {

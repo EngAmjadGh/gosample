@@ -20147,7 +20147,7 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function () {
           duration: toastData.duration,
           close: toastData.close == "close" ? true : false,
           style: toastData.style == "style" ? {
-            background: "linear-gradient(to right, #0AB39C, #405189)"
+            background: "linear-gradient(to right, #0AB39C, #005D69)"
           } : ""
         }).showToast();
       });

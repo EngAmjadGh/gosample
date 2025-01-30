@@ -67,6 +67,9 @@
                             {{ trans('cruds.shipment.fields.task') }}
                         </th>
                         <th>
+                            {{ trans('cruds.shipment.fields.created_at') }}
+                        </th>
+                        <th>
                             &nbsp;
                         </th>
                     </tr>
@@ -163,6 +166,10 @@
                     {
                         data: 'task_id',
                         name: 'task.task_id'
+                    },
+                    {
+                        data: 'created_at',
+                        name: 'created_at'
                     },
                     {
                         data: 'actions',

@@ -98,6 +98,9 @@ class ShipmentsController extends Controller
             $table->editColumn('sla_code', function ($row) {
                 return $row->sla_code ? $row->sla_code : '';
             });
+            $table->editColumn('created_at', function ($row) {
+                return $row->created_at ? $row->created_at : '';
+            });
 
             $table->rawColumns(['actions', 'placeholder', 'task']);
 

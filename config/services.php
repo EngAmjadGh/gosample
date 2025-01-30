@@ -30,5 +30,9 @@ return [
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
+    'ayenati' => [
+        'base_url' => env('AYENATI_BASE_URL', 'https://default-url.com'),
+        'carrierId' => env('AYENATI_CARRIER_ID', '1'),
+    ]
 
 ];

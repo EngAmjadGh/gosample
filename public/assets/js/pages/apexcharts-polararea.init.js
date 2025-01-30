@@ -100,7 +100,7 @@ var options = {
     monochrome: {
       enabled: true,
       shadeTo: 'light',
-      color: '#405189',
+      color: '#005D69',
       shadeIntensity: 0.6
     }
   }

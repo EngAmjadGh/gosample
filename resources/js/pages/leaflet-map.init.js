@@ -46,8 +46,8 @@ L.polygon([
     [51.503, -0.06],
     [51.51, -0.047]
 ], {
-    color: '#405189',
-    fillColor: '#405189',
+    color: '#005D69',
+    fillColor: '#005D69',
 }).addTo(markermap);
 
 
@@ -68,8 +68,8 @@ L.marker([51.5, -0.09]).addTo(popupmap)
     .bindPopup("<b>Hello world!</b><br />I am a popup.").openPopup();
 
 L.circle([51.508, -0.11], 500, {
-    color: '#f06548',
-    fillColor: '#f06548',
+    color: '#BD6BA7',
+    fillColor: '#BD6BA7',
     fillOpacity: 0.5
 }).addTo(popupmap).bindPopup("I am a circle.");
 
@@ -78,8 +78,8 @@ L.polygon([
     [51.503, -0.06],
     [51.51, -0.047]
 ], {
-    color: '#405189',
-    fillColor: '#405189',
+    color: '#005D69',
+    fillColor: '#005D69',
 }).addTo(popupmap).bindPopup("I am a polygon.");
 
 var popup = L.popup();
@@ -122,7 +122,7 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
 
 // get color depending on population density value
 function getColor(d) {
-    return d > 1000 ? '#405189' :
+    return d > 1000 ? '#005D69' :
         d > 500 ? '#516194' :
         d > 200 ? '#63719E' :
         d > 100 ? '#7480A9' :

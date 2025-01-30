@@ -15,7 +15,7 @@ if (classicPickrDemo)
         Pickr.create({
             el: ".classic-colorpicker",
             theme: "classic", // or 'monolith', or 'nano'
-            default: "#405189",
+            default: "#005D69",
             swatches: [
                 "rgba(244, 67, 54, 1)",
                 "rgba(233, 30, 99, 0.95)",
@@ -133,7 +133,7 @@ if (demoColorPickr)
         Pickr.create({
             el: ".colorpicker-demo",
             theme: "monolith",
-            default: "#405189",
+            default: "#005D69",
             components: {
                 // Main components
                 preview: true,
@@ -242,7 +242,7 @@ if (formatColorPickr)
         Pickr.create({
             el: ".colorpicker-format",
             theme: "monolith",
-            default: "#f06548",
+            default: "#BD6BA7",
             swatches: [
                 "rgba(244, 67, 54, 1)",
                 "rgba(233, 30, 99, 0.95)",
