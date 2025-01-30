@@ -50,6 +50,15 @@ class Shipment extends Model
     {
         return $this->belongsTo(Task::class, 'task_id');
     }
+    public function fromLocation()
+    {
+        return $this->belongsTo(Location::class, 'from_location');
+    }
+
+    public function toLocation()
+    {
+        return $this->belongsTo(Location::class, 'to_location');
+    }
 
     protected function serializeDate(DateTimeInterface $date)
     {

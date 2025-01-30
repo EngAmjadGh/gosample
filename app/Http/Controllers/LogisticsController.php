@@ -22,7 +22,36 @@ class LogisticsController
             'senderId' => $request->senderId,
             'receiverId' => $request->receiverId,
         ];
-        $shipment = Shipment::where('id', $request->dispatchId)->first();
+        $shipment = Shipment::where('shipment.id', $request->dispatchId)
+    ->where('shipment.from_location', $request->senderId)
+    ->where('shipment.to_location', $request->receiverId)
+    ->leftJoin('locations as from_location', 'from_location.id', '=', 'shipment.from_location')
+    ->leftJoin('locations as to_location', 'to_location.id', '=', 'shipment.to_location')
+    ->with('task.driver') // Ensure relationships exist in the model
+    ->first();
+       
+// Ensure task and driver exist
+$task = $shipment->task;
+$driver = $task ? $task->driver : null;
+
+// Ensure from_location and to_location exist
+$fromLocation = $shipment->fromLocation;
+$toLocation = $shipment->toLocation;
+
+return response()->json([
+    'statusCode' => 200,
+    'data' => [
+        "shipmentId" => $shipment->id,
+        "driverId" => $driver?->id, // Safe null check
+        "driverName" => $driver?->name,
+        "driverMobNumber" => $driver?->mobile,
+        "senderId" => $fromLocation?->id,
+        "senderName" => $fromLocation?->name,
+        "receiverId" => $toLocation?->id,
+        "receiverName" => $toLocation?->name,
+        "shipmentStatusCode" => $shipment->status_code
+    ]
+]);
         return $shipment;
         // $response = $this->logisticsService->getShipmentStatus(
         //     $validated['dispatchId'],
