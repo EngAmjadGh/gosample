@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Driver;
 use App\Models\Shipment;
 use App\Services\AyenatiLogisticsService;
 use Exception;
@@ -39,10 +40,7 @@ class LogisticsController
                     'status' => 'error',
                     'message' => [
                         "statusCode" => 400,
-                        "error" => [
-                            "code" => 400,
-                            "message" => "Error in paramters"
-                        ]
+                        $validator->errors(),
                     ],
                 ];
             }
@@ -51,10 +49,10 @@ class LogisticsController
                 ->where('shipment.to_location', $request->receiverId)
                 ->leftJoin('locations as from_location', 'from_location.id', '=', 'shipment.from_location')
                 ->leftJoin('locations as to_location', 'to_location.id', '=', 'shipment.to_location')
-                ->with('task.driver') // Ensure relationships exist in the model
+                ->with('task.driver') 
                 ->first();
 
-            // Ensure task and driver exist
+            
             if(isset($shipment)) {
                 $task = $shipment->task;
                 $driver = $task ? $task->driver : null;
@@ -81,7 +79,13 @@ class LogisticsController
             }
             
         } catch (Exception $e) {
-            return ["tets"];
+            return [
+                'status' => 'error',
+                'message' => [
+                    "statusCode" => 500,
+                    "error" => "General Error",
+                ],
+            ];
         }
 
 
@@ -91,5 +95,68 @@ class LogisticsController
         //     $validated['receiverId']
         // );
         // return $response;
+    }
+
+    public function updateShipment(Request $request)
+    {
+        try {
+            $data = $request->only([
+                'shipmentId',
+                'shipmentStatusCode',
+                'driverId',
+                'driverName',
+                'driverMobNumber',
+            ]);
+            $rules = [
+                'shipmentId'          => 'required|string',
+                'shipmentStatusCode'  => 'required|string',
+                'driverId'            => 'required|integer',
+                'driverName'          => 'required|string',
+                'driverMobNumber'     => 'required|string',
+            ];
+            $validator = Validator::make($data, $rules);
+            if ($validator->fails()) {
+                
+                return [
+                    'status' => 'error',
+                    'message' => [
+                        "statusCode" => 400,
+                        "error" => $validator->errors(),
+                    ],
+                ];
+            }
+
+            $shipment = Shipment::where('shipment.id', $request->shipmentId)
+                ->with('task.driver')
+                ->first();
+
+            if(isset($shipment)) {
+                $shipment->status_code = $request->shipmentStatusCode;
+                $shipment->save();
+                $task = $shipment->task;
+                if($task) {
+                    $task->driver_id = $request->driverId;
+                    $driver = Driver::find($request->driverId);
+                    $driver->name = $request->driverName;
+                    $driver->mobile = $request->driverMobNumber;
+                    $driver->save();
+                }
+                
+    
+                return response()->json([
+                    'message' => 'success',
+                    'statusCode' => '200'
+                ]);
+            }
+            
+        } catch (Exception $e) {
+            return [
+                'status' => 'error',
+                'message' => [
+                    "statusCode" => 500,
+                    "error" => "General Error",
+                ],
+            ];
+        }
     }
 }
