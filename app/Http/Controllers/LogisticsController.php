@@ -65,13 +65,13 @@ class LogisticsController
                     'message' => 'success',
                     'statusCode' => 200,
                     'data' => [
-                        "shipmentId" => stringValue($shipment->id),
+                        "shipmentId" => strval($shipment->id),
                         "driverId" => $driver?->id, // Safe null check
                         "driverName" => $driver?->name,
                         "driverMobNumber" => $driver?->mobile,
-                        "senderId" => stringValue($fromLocation?->id),
+                        "senderId" => strval($fromLocation?->id),
                         "senderName" => $fromLocation?->name,
-                        "receiverId" => stringValue($toLocation?->id),
+                        "receiverId" => strval($toLocation?->id),
                         "receiverName" => $toLocation?->name,
                         "shipmentStatusCode" => $shipment->status_code
                     ]
