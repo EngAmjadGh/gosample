@@ -107,3 +107,4 @@ Route::post('drivers/schedule','App\Http\Controllers\DriverController@getDriverS
 Route::post('swap/list/acceptall','App\Http\Controllers\SwapController@acceptall');
 
 Route::any('shipments/status-shipment', 'App\Http\Controllers\LogisticsController@getShipmentStatus');
+Route::any('shipments/update-shipment', 'App\Http\Controllers\LogisticsController@getShipmentStatus');

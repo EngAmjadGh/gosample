@@ -63,15 +63,15 @@ class LogisticsController
     
                 return response()->json([
                     'message' => 'success',
-                    'statusCode' => '200',
+                    'statusCode' => 200,
                     'data' => [
-                        "shipmentId" => $shipment->id,
+                        "shipmentId" => stringValue($shipment->id),
                         "driverId" => $driver?->id, // Safe null check
                         "driverName" => $driver?->name,
                         "driverMobNumber" => $driver?->mobile,
-                        "senderId" => $fromLocation?->id,
+                        "senderId" => stringValue($fromLocation?->id),
                         "senderName" => $fromLocation?->name,
-                        "receiverId" => $toLocation?->id,
+                        "receiverId" => stringValue($toLocation?->id),
                         "receiverName" => $toLocation?->name,
                         "shipmentStatusCode" => $shipment->status_code
                     ]
@@ -145,7 +145,7 @@ class LogisticsController
     
                 return response()->json([
                     'message' => 'success',
-                    'statusCode' => '200'
+                    'statusCode' => 200
                 ]);
             }
             
