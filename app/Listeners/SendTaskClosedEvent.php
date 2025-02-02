@@ -5,6 +5,7 @@ namespace App\Listeners;
 use App\Models\ElmNotification;
 use App\Models\Location;
 use App\Models\Sample;
+use App\Models\Shipment;
 use Carbon\Carbon;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
@@ -63,6 +64,19 @@ class SendTaskClosedEvent
                 // $notification->response_body = $body;
                 // $notification->type = 'SendTaskClosedEvent';
                 // $notification->save();
+                $shipment = Shipment::where('task_id', $task->id)->first();
+                $data = [
+                        "shipmentId" => $shipment->id,
+                        "shipmentStatusCode" => "Delivered",
+                        "driverId" => $task->driver_id,
+                        "driverName" => $task->driver->name,
+                        "driverMobNumber" => $task->driver->mobile
+                ];
+                $response = Http::withHeaders([
+                    // 'token' => 'ogpRRpkdCh8G4JhAGdFj4Q'
+                ])->post('https://testelab.seha.sa/api/logistics/updateShipmentStatus', $data );
+                $body = $response->body();
+                //To Implement
             } else{
                 if($task->billing_client == 42 || $task->billing_client == 33)
                 {
