@@ -147,6 +147,14 @@ class LogisticsController
                     'message' => 'success',
                     'statusCode' => 200
                 ]);
+            } else {
+                return [
+                    'status' => 'error',
+                    'message' => [
+                        "statusCode" => 3001,
+                        "error" => "Invalid dispatch ID If Logistics receive invalid ID",
+                    ],
+                ];
             }
             
         } catch (Exception $e) {
