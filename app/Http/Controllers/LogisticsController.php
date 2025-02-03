@@ -83,13 +83,13 @@ class LogisticsController
                     'message' => 'SUCCESS',
                     'statusCode' => 200,
                     'data' => [
-                        "shipmentId" => strval($shipment->id),
+                        "shipmentId" => $shipment->id."",
                         "driverId" => $driver?->id, // Safe null check
                         "driverName" => $driver?->name,
                         "driverMobNumber" => $driver?->mobile,
-                        "senderId" => strval($fromLocation?->id),
+                        "senderId" => $fromLocation?->id."",
                         "senderName" => $fromLocation?->name,
-                        "receiverId" => strval($toLocation?->id),
+                        "receiverId" => $toLocation?->id."",
                         "receiverName" => $toLocation?->name,
                         "shipmentStatusCode" => $shipment->status_code
                     ]
@@ -156,7 +156,7 @@ class LogisticsController
             $shipment = Shipment::where('id', $request->shipmentId)->first();
             $task = Task::where('id', $shipment->task_id)->first();
             $data = [
-                    "shipmentId" => strval($shipment->id),
+                    "shipmentId" => $shipment->id."",
                     "shipmentStatusCode" => $request->shipmentStatusCode,
                     "driverId" => intval($task->driver_id),
                     "driverName" => $task->driver->name,
