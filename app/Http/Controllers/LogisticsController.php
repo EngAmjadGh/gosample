@@ -164,7 +164,7 @@ class LogisticsController
             ];
             $response = Http::withHeaders([
                 // 'token' => 'ogpRRpkdCh8G4JhAGdFj4Q'
-            ])->post('https://testelab.seha.sa/api/logistics/updateShipmentStatus', $data );
+            ])->post('https://api.leanstg.io/p-ayenati/updateShipmentStatus', $data );
             $body = $response->body();
             
             \Log::info($body);
