@@ -154,13 +154,13 @@ class LogisticsController
                 ];
             }
             $shipment = Shipment::where('id', $request->shipmentId)->first();
-            $task = Task::where('id', $shipment->task_id)->first();
+            // $task = Task::where('id', $shipment->task_id)->first();
             $data = [
                     "shipmentId" => $shipment->id."",
                     "shipmentStatusCode" => $request->shipmentStatusCode,
-                    "driverId" => intval($task->driver_id),
-                    "driverName" => $task->driver->name,
-                    "driverMobNumber" => $task->driver->mobile
+                    "driverId" => 70,
+                    "driverName" => "Safwan Hijazi",
+                    "driverMobNumber" => "0555555555"
             ];
             $client = new \GuzzleHttp\Client();
             $response = $client->post('https://api.leanstg.io/oauth/token', [
@@ -184,14 +184,14 @@ class LogisticsController
             \Log::info($body);
             return $body;
         } catch (Exception $e) {
-            \Log::info($e->getMessage());
-            return [
-                'status' => 'error',
-                'message' => [
-                    "statusCode" => 500,
-                    "error" => "General Error",
-                ],
-            ];
+            // \Log::info($e->getMessage());
+            // return [
+            //     'status' => 'error',
+            //     'message' => [
+            //         "statusCode" => 500,
+            //         "error" => "General Error",
+            //     ],
+            // ];
         }
     }
 }
