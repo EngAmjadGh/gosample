@@ -56,20 +56,20 @@ class LogisticsController
                 
                 if($shipment->from_location != $request->senderId) {
                     return [
-                        'status' => 'error',
-                        'message' => [
-                            "statusCode" => 3002,
-                            "error" => "Invalid sender AYENATI ID If Logistics receive an invalid sender id <PHC> (Ayenati id)",
+                        'error' => [
+                            "code" => 3002,
+                            "message" => "Invalid sender AYENATI ID If Logistics receive an invalid sender id <PHC> (Ayenati id)",
                         ],
+                        "statusCode" => 400,
                     ];
                 }
                 if($shipment->to_location != $request->receiverId) {
                     return [
-                        'status' => 'error',
-                        'message' => [
-                            "statusCode" => 3003,
-                            "error" => "Invalid receiver AYENATI ID If Logistics receive an invalid receiver id <Lab> (Ayenati id)",
+                        'error' => [
+                            "code" => 3003,
+                            "message" => "Invalid receiver AYENATI ID If Logistics receive an invalid receiver id <Lab> (Ayenati id)",
                         ],
+                        "statusCode" => 400,
                     ];
                 }
                 $task = $shipment->task;
@@ -96,11 +96,11 @@ class LogisticsController
                 ]);
             } else {
                 return [
-                    'status' => 'error',
-                    'message' => [
-                        "statusCode" => 3001,
-                        "error" => "Invalid dispatch ID If Logistics receive invalid ID",
+                    'error' => [
+                        "code" => 3001,
+                        "message" => "Invalid dispatch ID If Logistics receive invalid ID",
                     ],
+                    "statusCode" => 400,
                 ];
             }
             
@@ -108,11 +108,11 @@ class LogisticsController
             
             \Log::info($e->getMessage());
             return [
-                'status' => 'error',
-                'message' => [
-                    "statusCode" => 500,
-                    "error" => "General Error",
+                'error' => [
+                    "code" => 500,
+                    "message" => "General Error",
                 ],
+                "statusCode" => 500,
             ];
         }
 
