@@ -156,7 +156,7 @@ class LogisticsController
             $shipment = Shipment::where('id', $request->shipmentId)->first();
             // $task = Task::where('id', $shipment->task_id)->first();
             $data = [
-                    "shipmentId" => $shipment->id."",
+                    "shipmentId" => $request->shipmentId."",
                     "shipmentStatusCode" => $request->shipmentStatusCode,
                     "driverId" => 70,
                     "driverName" => "Safwan Hijazi",
