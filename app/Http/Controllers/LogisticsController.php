@@ -52,26 +52,26 @@ class LogisticsController
                 ->leftJoin('locations as to_location', 'to_location.id', '=', 'shipment.to_location')
                 ->with('task.driver') 
                 ->first();
-            if($shipment->from_location != $request->senderId) {
-                return [
-                    'status' => 'error',
-                    'message' => [
-                        "statusCode" => 3002,
-                        "error" => "Invalid sender AYENATI ID If Logistics receive an invalid sender id <PHC> (Ayenati id)",
-                    ],
-                ];
-            }
-            if($shipment->to_location != $request->receiverId) {
-                return [
-                    'status' => 'error',
-                    'message' => [
-                        "statusCode" => 3003,
-                        "error" => "Invalid receiver AYENATI ID If Logistics receive an invalid receiver id <Lab> (Ayenati id)",
-                    ],
-                ];
-            }
-            
             if(isset($shipment)) {
+                
+                if($shipment->from_location != $request->senderId) {
+                    return [
+                        'status' => 'error',
+                        'message' => [
+                            "statusCode" => 3002,
+                            "error" => "Invalid sender AYENATI ID If Logistics receive an invalid sender id <PHC> (Ayenati id)",
+                        ],
+                    ];
+                }
+                if($shipment->to_location != $request->receiverId) {
+                    return [
+                        'status' => 'error',
+                        'message' => [
+                            "statusCode" => 3003,
+                            "error" => "Invalid receiver AYENATI ID If Logistics receive an invalid receiver id <Lab> (Ayenati id)",
+                        ],
+                    ];
+                }
                 $task = $shipment->task;
                 $driver = $task ? $task->driver : null;
     
