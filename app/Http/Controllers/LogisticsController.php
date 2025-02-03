@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Driver;
 use App\Models\Shipment;
+use App\Models\Task;
 use App\Services\AyenatiLogisticsService;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 
 class LogisticsController
@@ -120,22 +122,22 @@ class LogisticsController
         // return $response;
     }
 
-    public function updateShipment(Request $request)
+    public function updateShipmentStatus(Request $request)
     {
         try {
             $data = $request->only([
                 'shipmentId',
                 'shipmentStatusCode',
-                'driverId',
-                'driverName',
-                'driverMobNumber',
+                // 'driverId',
+                // 'driverName',
+                // 'driverMobNumber',
             ]);
             $rules = [
                 'shipmentId'          => 'required|string',
                 'shipmentStatusCode'  => 'required|string',
-                'driverId'            => 'required|integer',
-                'driverName'          => 'required|string',
-                'driverMobNumber'     => 'required|string',
+                // 'driverId'            => 'required|integer',
+                // 'driverName'          => 'required|string',
+                // 'driverMobNumber'     => 'required|string',
             ];
             $validator = Validator::make($data, $rules);
             if ($validator->fails()) {
@@ -148,37 +150,19 @@ class LogisticsController
                     ],
                 ];
             }
-
-            $shipment = Shipment::where('shipment.id', $request->shipmentId)
-                ->with('task.driver')
-                ->first();
-
-            if(isset($shipment)) {
-                $shipment->status_code = $request->shipmentStatusCode;
-                $shipment->save();
-                $task = $shipment->task;
-                if($task) {
-                    $task->driver_id = $request->driverId;
-                    $driver = Driver::find($request->driverId);
-                    $driver->name = $request->driverName;
-                    $driver->mobile = $request->driverMobNumber;
-                    $driver->save();
-                }
-                
-    
-                return response()->json([
-                    'message' => 'success',
-                    'statusCode' => 200
-                ]);
-            } else {
-                return [
-                    'status' => 'error',
-                    'message' => [
-                        "statusCode" => 3001,
-                        "error" => "Invalid dispatch ID If Logistics receive invalid ID",
-                    ],
-                ];
-            }
+            $shipment = Shipment::where('id', $request->shipmentId)->first();
+            $task = Task::where('id', $shipment->task_id)->first();
+            $data = [
+                    "shipmentId" => $shipment->id,
+                    "shipmentStatusCode" => $request->shipmentStatusCode,
+                    "driverId" => $task->driver_id,
+                    "driverName" => $task->driver->name,
+                    "driverMobNumber" => $task->driver->mobile
+            ];
+            $response = Http::withHeaders([
+                // 'token' => 'ogpRRpkdCh8G4JhAGdFj4Q'
+            ])->post('https://testelab.seha.sa/api/logistics/updateShipmentStatus', $data );
+            $body = $response->body();
             
         } catch (Exception $e) {
             return [

@@ -76,7 +76,6 @@ class SendTaskClosedEvent
                     // 'token' => 'ogpRRpkdCh8G4JhAGdFj4Q'
                 ])->post('https://testelab.seha.sa/api/logistics/updateShipmentStatus', $data );
                 $body = $response->body();
-                //To Implement
             } else{
                 if($task->billing_client == 42 || $task->billing_client == 33)
                 {
