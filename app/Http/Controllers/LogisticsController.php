@@ -176,7 +176,7 @@ class LogisticsController
             $data = json_decode( $response->getBody()->getContents(), true);
 
             $response = Http::withHeaders([
-                'token' => $data['access_token']
+                'Authorization' => 'Bearer '.$data['access_token'],
             ])->post('https://api.leanstg.io/p-ayenati/updateShipmentStatus', $data );
             $body = $response->body();
             
