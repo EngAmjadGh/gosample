@@ -168,6 +168,7 @@ class LogisticsController
             $body = $response->body();
             
             \Log::info($body);
+            return $body;
         } catch (Exception $e) {
             \Log::info($e->getMessage());
             return [
