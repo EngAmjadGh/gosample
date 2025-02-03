@@ -83,7 +83,7 @@ class LogisticsController
                     'message' => 'SUCCESS',
                     'statusCode' => 200,
                     'data' => [
-                        "shipmentId" => $shipment->id."",
+                        "shipmentId" => $request->dispatchId."",
                         "driverId" => $driver?->id, // Safe null check
                         "driverName" => $driver?->name,
                         "driverMobNumber" => $driver?->mobile,
