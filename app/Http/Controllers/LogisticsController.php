@@ -79,7 +79,7 @@ class LogisticsController
                 $toLocation = $shipment->toLocation;
     
                 return response()->json([
-                    'message' => 'success',
+                    'message' => 'SUCCESS',
                     'statusCode' => 200,
                     'data' => [
                         "shipmentId" => strval($shipment->id),
