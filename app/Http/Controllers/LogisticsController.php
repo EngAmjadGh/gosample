@@ -167,6 +167,7 @@ class LogisticsController
             ])->post('https://testelab.seha.sa/api/logistics/updateShipmentStatus', $data );
             $body = $response->body();
             
+            \Log::info($body);
         } catch (Exception $e) {
             \Log::info($e->getMessage());
             return [
