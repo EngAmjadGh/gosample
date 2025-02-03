@@ -9,6 +9,7 @@ use App\Services\AyenatiLogisticsService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class LogisticsController
@@ -104,6 +105,8 @@ class LogisticsController
             }
             
         } catch (Exception $e) {
+            
+            \Log::info($e->getMessage());
             return [
                 'status' => 'error',
                 'message' => [
@@ -165,6 +168,7 @@ class LogisticsController
             $body = $response->body();
             
         } catch (Exception $e) {
+            \Log::info($e->getMessage());
             return [
                 'status' => 'error',
                 'message' => [
