@@ -162,8 +162,21 @@ class LogisticsController
                     "driverName" => $task->driver->name,
                     "driverMobNumber" => $task->driver->mobile
             ];
+            $client = new \GuzzleHttp\Client();
+            $response = $client->post('https://api.leanstg.io/oauth/token', [
+                'headers' => [
+                    'Authorization' => 'Basic bUZTTk5sMUN6TzB4QUZLRXhua2IxV3NtZHZDYTZKOEQ6ampuRHJiU2M0RUlSS0lrZw==',
+                    'Content-Type' => 'application/x-www-form-urlencoded'
+                ],
+                'form_params' => [
+                    'grant_type' => 'client_credentials',
+                ]
+            ]);
+    
+            $data = json_decode( $response->getBody()->getContents(), true);
+
             $response = Http::withHeaders([
-                // 'token' => 'ogpRRpkdCh8G4JhAGdFj4Q'
+                'token' => $data['access_token']
             ])->post('https://api.leanstg.io/p-ayenati/updateShipmentStatus', $data );
             $body = $response->body();
             
