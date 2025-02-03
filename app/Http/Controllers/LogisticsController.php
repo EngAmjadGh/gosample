@@ -173,11 +173,11 @@ class LogisticsController
                 ]
             ]);
     
-            $data = json_decode( $response->getBody()->getContents(), true);
+            $data2 = json_decode( $response->getBody()->getContents(), true);
 
-            \Log::info($data['access_token']);
+            \Log::info($data2['access_token']);
             $response = Http::withHeaders([
-                'Authorization' => 'Bearer '.$data['access_token'],
+                'Authorization' => 'Bearer '.$data2['access_token'],
             ])->post('https://api.leanstg.io/p-ayenati/notifications/updateNotificationDetails', $data );
             $body = $response->body();
             
