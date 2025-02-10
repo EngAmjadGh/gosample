@@ -100,7 +100,7 @@
     </div>
     <div class="d-none">
         <div class="float-right text-center" id='barcode_area'>
-            <img src="{{ URL::asset('assets/images/mtc_logo.jpg') }}" alt="">
+            <img src="{{ URL::asset('assets/img/logo_excel_2.jpg') }}" alt="" style="height: 150px;">
 
             <!-- <img src="{{ asset('assets/images/mtc_logo.jpg') }}" alt=""> -->
             <h1>Type: {{ $container->type }}</h1>

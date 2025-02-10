@@ -347,6 +347,7 @@ class ShipmentsController extends Controller
                 'response_flag' => 'failed',
                 'response' => $errorMessage,
             ]);
+            
             return false;
         }
     }

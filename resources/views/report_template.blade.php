@@ -71,7 +71,7 @@
             <div class="container">
                 <div id='footer_logo' style='position: absolute;top: 0; left: 0;'>
                     <p>
-                        <img src="https://gosample.com/assets/img/mtc_logo.jpg" style="height: 113px;width:200px">
+                        <img src="https://gosample.com/assets/img/logo_excel_2.jpg" style="height: 113px;width:200px">
                     </p>
                 </div>
             </div>
@@ -85,7 +85,7 @@
                     <p>
                         @if ($client_logo)
                             <img src="https://gosample.com/{{ $client_logo }}" style="height: 113px;width:200px">
-                            {{-- <img src="https://gosample.com/assets/img/mtc_logo.jpg" style="height: 113px;width:200px"> --}}
+                            {{-- <img src="https://gosample.com/assets/img/logo_excel_2.jpg" style="height: 113px;width:200px"> --}}
                         @endif
                     </p>
                 </div>
