@@ -131,28 +131,22 @@ class LogisticsController
             $data = $request->only([
                 'shipmentId',
                 'shipmentStatusCode',
-                // 'driverId',
-                // 'driverName',
-                // 'driverMobNumber',
             ]);
             $rules = [
                 'shipmentId'          => 'required|string',
                 'shipmentStatusCode'  => 'required|string',
-                // 'driverId'            => 'required|integer',
-                // 'driverName'          => 'required|string',
-                // 'driverMobNumber'     => 'required|string',
             ];
             $validator = Validator::make($data, $rules);
-            // if ($validator->fails()) {
+            if ($validator->fails()) {
                 
-            //     return [
-            //         'status' => 'error',
-            //         'message' => [
-            //             "statusCode" => 400,
-            //             "error" => $validator->errors(),
-            //         ],
-            //     ];
-            // }
+                return [
+                    'status' => 'error',
+                    'message' => [
+                        "statusCode" => 400,
+                        "error" => $validator->errors(),
+                    ],
+                ];
+            }
             $shipment = Shipment::where('id', $request->shipmentId)->first();
             // $task = Task::where('id', $shipment->task_id)->first();
             $data = [
@@ -184,14 +178,14 @@ class LogisticsController
             \Log::info($body);
             return $body;
         } catch (Exception $e) {
-            // \Log::info($e->getMessage());
-            // return [
-            //     'status' => 'error',
-            //     'message' => [
-            //         "statusCode" => 500,
-            //         "error" => "General Error",
-            //     ],
-            // ];
+            \Log::info($e->getMessage());
+            return [
+                'status' => 'error',
+                'message' => [
+                    "statusCode" => 500,
+                    "error" => "General Error",
+                ],
+            ];
         }
     }
 }

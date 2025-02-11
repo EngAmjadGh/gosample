@@ -7,6 +7,7 @@ use App\Models\Location;
 use App\Models\Sample;
 use App\Models\Shipment;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Http;
@@ -69,18 +70,53 @@ class SendSamplesCollectedEvent
                 // $notification->response_body = $body;
                 // $notification->type = 'SendSamplesCollectedEvent';
                 // $notification->save();
-                $shipment = Shipment::where('task_id', $task->id)->first();
-                $data = [
-                        "shipmentId" => $shipment->id,
-                        "shipmentStatusCode" => "Dispatched",
-                        "driverId" => $task->driver_id,
-                        "driverName" => $task->driver->name,
-                        "driverMobNumber" => $task->driver->mobile
-                ];
-                $response = Http::withHeaders([
-                    // 'token' => 'ogpRRpkdCh8G4JhAGdFj4Q'
-                ])->post('https://testelab.seha.sa/api/logistics/updateShipmentStatus', $data );
-                $body = $response->body();
+                // $response = Http::withHeaders([
+                //     // 'token' => 'ogpRRpkdCh8G4JhAGdFj4Q'
+                // ])->post('https://testelab.seha.sa/api/logistics/updateShipmentStatus', $data );
+                // $body = $response->body();
+
+
+                try {
+                    $shipment = Shipment::where('task_id', $task->id)->first();
+                    $data = [
+                            "shipmentId" => $shipment->id,
+                            "shipmentStatusCode" => "Dispatched",
+                            "driverId" => $task->driver_id,
+                            "driverName" => $task->driver->name,
+                            "driverMobNumber" => $task->driver->mobile
+                    ];
+                    $client = new \GuzzleHttp\Client();
+                    $response = $client->post('https://api.leanstg.io/oauth/token', [
+                        'headers' => [
+                            'Authorization' => 'Basic bUZTTk5sMUN6TzB4QUZLRXhua2IxV3NtZHZDYTZKOEQ6ampuRHJiU2M0RUlSS0lrZw==',
+                            'Content-Type' => 'application/x-www-form-urlencoded'
+                        ],
+                        'form_params' => [
+                            'grant_type' => 'client_credentials',
+                        ]
+                    ]);
+            
+                    $data2 = json_decode( $response->getBody()->getContents(), true);
+        
+                    \Log::info($data2['access_token']);
+                    $response = Http::withHeaders([
+                        'Authorization' => 'Bearer '.$data2['access_token'],
+                    ])->post('https://api.leanstg.io/p-ayenati/notifications/updateNotificationDetails', $data );
+                    $body = $response->body();
+                    
+                    \Log::info($body);
+                    return $body;
+                } catch (Exception $e) {
+                    \Log::info($e->getMessage());
+                    return [
+                        'status' => 'error',
+                        'message' => [
+                            "statusCode" => 500,
+                            "error" => "General Error",
+                        ],
+                    ];
+                }
+
 
                 //To Implement update
             } else{
