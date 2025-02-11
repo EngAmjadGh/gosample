@@ -58,6 +58,9 @@
                         <a class="dropdown-item" href="{{ route('admin.tasks.create') }}">
                             <i class="bx bx-plus-circle me-2"></i>Add Task
                         </a>
+                        <a class="dropdown-item" href="{{ route('admin.shipments.create') }}">
+                            <i class="bx bx-plus-circle me-2"></i>Add Shipment
+                        </a>
                         <a class="dropdown-item" href="{{ route('admin.tasks.index') }}">
                             <i class="bx bx-list-check me-2"></i>List Tasks (New Tasks)
                             @if ($newTasksCount > 0)

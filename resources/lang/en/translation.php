@@ -35,6 +35,7 @@ return [
     "attendances"=>"Attendances",
     "attendance"=>"Attendance",
     "tasks"=>"Tasks",
+    "shipments" => "Shipments",
     "service-package"=>"Service Package",
     "customer-wallets"=>"Customer Wallet",
 

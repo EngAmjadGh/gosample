@@ -31,6 +31,7 @@ return [
     "overview" => "ملخص",
     "create-project" => "أنشئ مشروعًا",
     "tasks" => "مهام",
+    "shipments" => "نقلات",
     "kanbanboard" => "مجلس كانبان",
     "list-view" => "عرض القائمة",
     "task-details" => "تفاصيل المهمة",

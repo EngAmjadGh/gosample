@@ -3,11 +3,15 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreShipmentRequest;
 use App\Models\Shipment;
 use App\Jobs\GenerateAtenatiTokenJob;
 use App\Models\ApiAyenati;
 use App\Models\AyenatiToken;
+use App\Models\Car;
+use App\Models\Client;
 use App\Models\Driver;
+use App\Models\Location;
 use App\Models\Task;
 use Gate;
 use Illuminate\Http\Request;
@@ -120,7 +124,66 @@ class ShipmentsController extends Controller
 
         return view('admin.shipments.show', compact('shipment','drivers','task'));
     }
+    public function create()
+    {
+        abort_if(Gate::denies('task_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
+        $logged_id_user = auth()->user();
+        if($logged_id_user->client_id != null)
+        {
+            $from_locations = Location::select('locations.*')
+            ->leftJoin('client_location','client_location.location_id','locations.id')
+            ->where('client_location.client_id',$logged_id_user->client_id)
+            ->pluck('name', 'id');
+            $to_locations = $from_locations;
+
+            $drivers = Driver::pluck('name', 'id')->prepend(trans('translation.pleaseSelect'), '');
+
+        } else{
+            $from_locations = Location::pluck('name', 'id');
+
+            $to_locations = Location::pluck('name', 'id')->prepend(trans('translation.pleaseSelect'), '');
+
+            $drivers = Driver::pluck('name', 'id')->prepend(trans('translation.pleaseSelect'), '');
+        }
+
+        $tasks = Task::pluck('id')->prepend(trans('translation.pleaseSelect'), '');
+
+        return view('admin.shipments.create', compact('drivers', 'from_locations', 'to_locations', 'tasks'));
+    }
+
+    public function store(StoreShipmentRequest $request)
+    {
+        $logged_id_user = auth()->user();
+        $driver = Driver::find( $request->driver_id);
+        $shipment = new Shipment();//::create($request->all());
+        $shipment->carrier = $request->carrier;
+        $shipment->sender_name = $request->sender_name ?? '';
+        $shipment->sender_long = $request->sender_long ?? '';
+        $shipment->sender_lat = $request->sender_lat ?? '';
+        $shipment->sender_mobile = $request->sender_mobile ?? '';
+        $shipment->receiver_name = $request->receiver_name ?? '';
+        $shipment->receiver_long = $request->receiver_long ?? '';
+        $shipment->receiver_lat = $request->receiver_lat ?? '';
+        $shipment->receiver_mobile = $request->receiver_mobile ?? '';
+        $shipment->reference_number = $request->reference_number ?? '';
+        $shipment->pickup_otp = rand(1000,9999);
+        $shipment->batch = $request->batch;
+        $shipment->journey_type = 0;
+        $shipment->sla_code = "STAT";
+        $shipment->status_code = "Assigned";
+
+        $shipment->task_id = $request->task;
+        $shipment->from_location = $request->from_location;
+        $shipment->to_location = $request->to_location;
+        $shipment->driver_id = $request->driver_id;
+        $shipment->created_at = now();
+        $shipment->save();
+
+        // $driver->sendNotification( 'New shipment', 'You have new shipment',[$driver->fcm_token],$shipment,'open_task');
+
+        return redirect()->route('admin.shipments.index');
+    }
 
     public function assignDriver(Request $request, $shipmentId)
     {

@@ -155,7 +155,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'App\Http\Co
      // Notifications
      Route::resource('notifications', 'NotificationsController', ['except' => ['create', 'store', 'edit', 'update', 'destroy']]);
 
-     Route::resource('shipments', 'ShipmentsController', ['except' => ['create', 'store', 'edit', 'update', 'destroy']]);
+     Route::resource('shipments', 'ShipmentsController', ['except' => ['edit', 'update', 'destroy']]);
 
 
      Route::get('system-calendar', 'SystemCalendarController@index')->name('systemCalendar');
